@@ -16,6 +16,9 @@ class UserModel(_database.Base):
     created_at = _sqlalchemy.Column(_sqlalchemy.DateTime, default=_datetime.datetime.utcnow())
     posts = _orm.relationships("Post", back_populates="user")
 
+    def password_verification(self, password: str):
+        return _hash.bcrypt.verify(password, self.password_hash)
+
 
 class PostModel(_database.Base):
     __tablename__ = "posts"
