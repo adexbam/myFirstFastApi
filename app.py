@@ -18,4 +18,6 @@ async def register_user(
     if db_user:
         raise _fastapi.HTTPException(status_code=400, detail="Email already exist, try with another email")
 
-    # create user and return a token
+    # create the user and return a token
+    db_user = await _services.create_user(user=user, db=db)
+    return await _services.create_token(user=db_user)
