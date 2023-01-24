@@ -13,7 +13,7 @@ class Config:
 
 
 class UserRequest(UserBase):
-    password_hash: str
+    password: str
 
     Config = Config()
 
