@@ -10,7 +10,7 @@ app = _fastapi.FastAPI()
 
 @app.post("/api/v1/users")
 async def register_user(
-        user: _schemas.UserRequest, db: _orm.Session = _fastapi.Depends(_services.get_db())
+        user: _schemas.UserRequest, db: _orm.Session = _fastapi.Depends(_services.get_db)
 ):
     # call to check if user with email exist
     db_user = await _services.getUserByEmail(email=user.email, db=db)

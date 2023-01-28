@@ -1,3 +1,5 @@
+import os
+
 import database as _database
 import models as _models
 import sqlalchemy.orm as _orm
@@ -7,7 +9,10 @@ import email_validator as _email_validator
 import fastapi as _fastapi
 import passlib.hash as _hash
 import jwt as _jwt
-_JWT_SECRET = "AJDBBBNK1345WLJAJAJJAaaaaksjj"
+from dotenv import load_dotenv
+
+load_dotenv()
+_JWT_SECRET = os.getenv('JWT_SECRET')
 
 
 def create_db():
@@ -51,7 +56,7 @@ async def create_user(user: _schemas.UserRequest, db: _orm.Session):
 
 async def create_token(user: _models.UserModel):
     # convert user model to user schema
-    user_schema = _schemas.UserBase.from_orm(user)
+    user_schema = _schemas.UserResponse.from_orm(user)
     # convert obj to dictionary
     user_dict = user_schema.dict()
     del user_dict["created_at"]
@@ -59,3 +64,17 @@ async def create_token(user: _models.UserModel):
     token = _jwt.encode(user_dict, _JWT_SECRET)
 
     return dict(access_token=token, token_type="bearer")
+
+
+async def login(email: str, password: str, db: _orm.Session):
+    db_user = await getUserByEmail(email=email, db=db)
+
+    # Return false if no user is found
+    if not db_user:
+        return False
+
+    # Return false if no user is found
+    if not db_user.password_verification(password=password):
+        return False
+
+    return db_user

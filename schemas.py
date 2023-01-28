@@ -8,21 +8,19 @@ class UserBase(_pydantic.BaseModel):
     phone: str
 
 
-class Config:
-    orm_mode = True
-
-
 class UserRequest(UserBase):
     password: str
 
-    Config = Config()
+    class Config:
+        orm_mode = True
 
 
 class UserResponse(UserBase):
     id: int
     created_at: _datetime.datetime
 
-    Config = Config()
+    class Config:
+        orm_mode = True
 
 
 class PostBase(_pydantic.BaseModel):
@@ -40,4 +38,5 @@ class PostResponse(PostBase):
     user_id: str
     created_at: _datetime.datetime
 
-    Config = Config()
+    class Config:
+        orm_mode = True
