@@ -35,3 +35,8 @@ async def login_user(
         raise _fastapi.HTTPException(status_code=401, detail="Wrong Login Credentials")
     # create and return token
     return await _services.create_token(db_user)
+
+
+@app.get("/api/v1/users/current-user", response_model=_schemas.UserResponse)
+async def current_user(user: _schemas.UserResponse = _fastapi.Depends(_services.current_user)):
+    return user

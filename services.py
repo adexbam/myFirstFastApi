@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 load_dotenv()
 _JWT_SECRET = os.getenv('JWT_SECRET')
 
-oauth2schema = _security.OAuth2PasswordRequestForm("/api/v1/login")
+oauth2schema = _security.OAuth2PasswordBearer("/api/v1/login")
 
 
 def create_db():
